@@ -1,8 +1,11 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import ProductsList from "./ProductsList"
+// import ProductsList from "./ProductsList"
 
 function App() {
+
+  const ProductList = React.lazy(() => { return import("./ProductsList")})
+
   const [count, setCount] = React.useState(0)
   const [showProducts, setShowProducts] = React.useState(false)
 
@@ -33,9 +36,12 @@ function App() {
             </button>
       <br />
       <br />
-      <div className="products-list">
-        {showProducts && <ProductsList />}
-      </div>
+
+      <React.Suspense fallback={<h1>Loading...</h1>}>
+        <div className="products-list">
+          {showProducts && <ProductList />}
+        </div>
+      </React.Suspense>
     </>
   )
 }
